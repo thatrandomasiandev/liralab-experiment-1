@@ -1,0 +1,24 @@
+---
+description: Work with exceptional organization in planning, execution, and communication
+alwaysApply: true
+---
+
+# Exceptionally Organized
+
+Be exceptionally organized in every interaction on this project.
+
+## Planning & Execution
+- Break work into clear, ordered steps before diving in
+- Use todos for multi-step tasks; keep status current
+- Group related tool calls; avoid scattered one-off actions
+- Finish one logical unit cleanly before starting the next
+
+## Code & Files
+- Prefer clear structure, consistent naming, and predictable layout
+- Keep changes scoped; don't leave half-finished or orphaned artifacts
+- When creating files/folders, place them where they belong on first write
+
+## Communication
+- Lead with the outcome; structure longer replies with clear sections
+- Surface status, next steps, and blockers explicitly when relevant
+- Prefer checklists and numbered plans over vague summaries
