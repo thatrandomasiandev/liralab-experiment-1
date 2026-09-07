@@ -1,0 +1,32 @@
+#!/bin/bash
+# One-shot env bootstrap on a GPU/debug node. Submit from login:
+#   sbatch /project2/biyik_1165/jjt_373/LIRALab-Experiment-1/carc/jobs/bootstrap_env.job
+
+#SBATCH --job-name=bpref_bootstrap
+#SBATCH --account=biyik_1165
+#SBATCH --partition=debug
+#SBATCH --nodes=1
+#SBATCH --ntasks=1
+#SBATCH --cpus-per-task=4
+#SBATCH --gpus-per-task=p100:1
+#SBATCH --mem=16G
+#SBATCH --time=1:00:00
+#SBATCH --output=/project2/biyik_1165/jjt_373/LIRALab-Experiment-1/carc/logs/bootstrap-%j.out
+#SBATCH --error=/project2/biyik_1165/jjt_373/LIRALab-Experiment-1/carc/logs/bootstrap-%j.err
+
+set -euo pipefail
+
+# sbatch jobs are non-login shells — load Lmod explicitly
+if [[ -f /etc/profile.d/modules.sh ]]; then
+  # shellcheck source=/dev/null
+  source /etc/profile.d/modules.sh
+elif [[ -f /etc/profile ]]; then
+  # shellcheck source=/dev/null
+  source /etc/profile
+fi
+
+ROOT="/project2/biyik_1165/jjt_373/LIRALab-Experiment-1"
+mkdir -p "${ROOT}/carc/logs"
+cd "$ROOT"
+export CARC_NETID="${USER}"
+bash carc/scripts/bootstrap_env.sh

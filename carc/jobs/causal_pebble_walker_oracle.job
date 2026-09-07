@@ -1,0 +1,71 @@
+#!/bin/bash
+# Paper-default PEBBLE Walker-walk Oracle with causal instrumentation.
+# Submit: sbatch carc/jobs/causal_pebble_walker_oracle.job
+
+#SBATCH --job-name=pebble_causal_oracle
+#SBATCH --account=biyik_1165
+#SBATCH --partition=gpu
+#SBATCH --nodes=1
+#SBATCH --ntasks=1
+#SBATCH --cpus-per-task=8
+#SBATCH --gpus-per-task=v100:1
+#SBATCH --mem=32G
+#SBATCH --time=48:00:00
+#SBATCH --output=/project2/biyik_1165/jjt_373/LIRALab-Experiment-1/carc/logs/causal-oracle-%j.out
+#SBATCH --error=/project2/biyik_1165/jjt_373/LIRALab-Experiment-1/carc/logs/causal-oracle-%j.err
+
+set -euo pipefail
+
+ROOT="/project2/biyik_1165/jjt_373/LIRALab-Experiment-1"
+mkdir -p "${ROOT}/carc/logs"
+# shellcheck source=/dev/null
+source "${ROOT}/carc/env.sh"
+export CARC_NETID="${CARC_NETID:-$USER}"
+# shellcheck source=/dev/null
+source "${ROOT}/carc/env.sh"
+
+if [[ -f /etc/profile.d/modules.sh ]]; then
+  source /etc/profile.d/modules.sh
+fi
+module purge
+module load gcc/11.3.0 2>/dev/null || module load gcc/13.3.0
+module load cuda/11.8.0 2>/dev/null || module load cuda/12.4.0
+
+# shellcheck source=/dev/null
+source "${CARC_CONDA_DIR}/etc/profile.d/conda.sh"
+conda activate "${CARC_ENV_NAME}"
+
+export MUJOCO_GL=egl
+export PYOPENGL_PLATFORM=egl
+
+cd "${ROOT}/BPref"
+nvidia-smi || true
+
+python -u train_PEBBLE.py \
+  env=walker_walk \
+  seed=12345 \
+  device=cuda \
+  agent.params.actor_lr=0.0005 \
+  agent.params.critic_lr=0.0005 \
+  gradient_update=1 \
+  activation=tanh \
+  num_unsup_steps=9000 \
+  num_train_steps=500000 \
+  num_interact=20000 \
+  max_feedback=1000 \
+  reward_batch=100 \
+  reward_update=50 \
+  feed_type=0 \
+  teacher_beta=-1 \
+  teacher_gamma=1 \
+  teacher_eps_mistake=0 \
+  teacher_eps_skip=0 \
+  teacher_eps_equal=0 \
+  enable_causal_metrics=true \
+  val_fraction=0.2 \
+  fixed_ref_size=256 \
+  onpolicy_acc_pairs=64 \
+  onpolicy_acc_episodes=3 \
+  save_rm_every_update=true \
+  eval_frequency=20000 \
+  experiment=PEBBLE_causal

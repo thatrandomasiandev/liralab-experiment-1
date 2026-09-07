@@ -28,3 +28,17 @@ build/
 out/
 coverage/
 *.log
+.uv-cache/
+
+# Experiment artifacts (large / regenerable)
+**/exp/
+**/checkpoints/
+*.pt
+*.pth
+*.pkl
+MUJOCO_LOG.TXT
+
+# Local secrets / machine-specific
+*.pem
+id_ed25519*
+!.env.example

@@ -1,0 +1,22 @@
+#!/bin/bash
+#SBATCH --job-name=bpref_finish_boot
+#SBATCH --account=biyik_1165
+#SBATCH --partition=debug
+#SBATCH --nodes=1
+#SBATCH --ntasks=1
+#SBATCH --cpus-per-task=4
+#SBATCH --gpus-per-task=p100:1
+#SBATCH --mem=16G
+#SBATCH --time=1:00:00
+#SBATCH --output=/project2/biyik_1165/jjt_373/LIRALab-Experiment-1/carc/logs/finishboot-%j.out
+#SBATCH --error=/project2/biyik_1165/jjt_373/LIRALab-Experiment-1/carc/logs/finishboot-%j.err
+
+set -euo pipefail
+if [[ -f /etc/profile.d/modules.sh ]]; then
+  source /etc/profile.d/modules.sh
+fi
+ROOT="/project2/biyik_1165/jjt_373/LIRALab-Experiment-1"
+mkdir -p "${ROOT}/carc/logs"
+cd "$ROOT"
+export CARC_NETID="${USER}"
+bash carc/scripts/finish_bootstrap.sh

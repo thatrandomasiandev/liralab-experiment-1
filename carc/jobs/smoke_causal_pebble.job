@@ -1,0 +1,75 @@
+#!/bin/bash
+# Short instrumented PEBBLE smoke (causal metrics on).
+# Submit: sbatch carc/jobs/smoke_causal_pebble.job
+
+#SBATCH --job-name=pebble_causal_smoke
+#SBATCH --account=biyik_1165
+#SBATCH --partition=gpu
+#SBATCH --nodes=1
+#SBATCH --ntasks=1
+#SBATCH --cpus-per-task=8
+#SBATCH --gpus-per-task=v100:1
+#SBATCH --mem=32G
+#SBATCH --time=4:00:00
+#SBATCH --output=/project2/biyik_1165/jjt_373/LIRALab-Experiment-1/carc/logs/causal-smoke-%j.out
+#SBATCH --error=/project2/biyik_1165/jjt_373/LIRALab-Experiment-1/carc/logs/causal-smoke-%j.err
+
+set -euo pipefail
+
+ROOT="/project2/biyik_1165/jjt_373/LIRALab-Experiment-1"
+mkdir -p "${ROOT}/carc/logs"
+# shellcheck source=/dev/null
+source "${ROOT}/carc/env.sh"
+export CARC_NETID="${CARC_NETID:-$USER}"
+# shellcheck source=/dev/null
+source "${ROOT}/carc/env.sh"
+
+if [[ -f /etc/profile.d/modules.sh ]]; then
+  source /etc/profile.d/modules.sh
+fi
+module purge
+module load gcc/11.3.0 2>/dev/null || module load gcc/13.3.0
+module load cuda/11.8.0 2>/dev/null || module load cuda/12.4.0
+
+# shellcheck source=/dev/null
+source "${CARC_CONDA_DIR}/etc/profile.d/conda.sh"
+conda activate "${CARC_ENV_NAME}"
+
+export MUJOCO_GL=egl
+export PYOPENGL_PLATFORM=egl
+
+cd "${ROOT}/BPref"
+nvidia-smi || true
+
+python -u train_PEBBLE.py \
+  env=walker_walk \
+  seed=12345 \
+  device=cuda \
+  agent.params.actor_lr=0.0005 \
+  agent.params.critic_lr=0.0005 \
+  gradient_update=1 \
+  activation=tanh \
+  num_seed_steps=1000 \
+  num_unsup_steps=2000 \
+  num_train_steps=12000 \
+  num_interact=3000 \
+  max_feedback=200 \
+  reward_batch=50 \
+  reward_update=10 \
+  feed_type=0 \
+  teacher_beta=-1 \
+  teacher_gamma=1 \
+  teacher_eps_mistake=0 \
+  teacher_eps_skip=0 \
+  teacher_eps_equal=0 \
+  enable_causal_metrics=true \
+  val_fraction=0.2 \
+  fixed_ref_size=64 \
+  onpolicy_acc_pairs=32 \
+  onpolicy_acc_episodes=2 \
+  save_rm_every_update=true \
+  eval_frequency=6000 \
+  log_frequency=1000 \
+  log_save_tb=false \
+  num_eval_episodes=3 \
+  experiment=PEBBLE_causal_smoke
