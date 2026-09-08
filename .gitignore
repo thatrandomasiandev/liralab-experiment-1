@@ -15,7 +15,7 @@ Thumbs.db
 *.swp
 .idea/
 .vscode/
-!.cursor/rules/
+.cursor/
 
 # Build / cache
 dist/
