@@ -111,7 +111,17 @@ Apple Silicon was used only for early recon. Prefer CARC for real runs. Nontrivi
 - [x] B-Pref setup (local + CARC)
 - [x] Frozen-window recon (holds in this codebase)
 - [x] Causal instrumentation + debug smoke
-- [ ] Full Oracle 500k + Mistake sweep results (submitted; GPU queue dependent)
+- [x] Full Oracle 500k + Mistake sweep results (completed on CARC; see `results/`)
+
+## Results website
+
+```bash
+cd results/website && python3 -m http.server 8766
+# open http://127.0.0.1:8766
+```
+
+Interactive charts live in [`results/website/`](results/website/). Written readout: [`results/POSTDOC_READOUT.md`](results/POSTDOC_READOUT.md).
+
 
 ## Citation / upstream
 

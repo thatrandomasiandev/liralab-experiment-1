@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>LIRALab · PEBBLE Causal Results</title>
+  <meta name="description" content="Walker-walk PEBBLE mistake-teacher sweep: reward-model accuracy vs downstream performance under frozen update windows." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Outfit:wght@400;500;600;700&family=Source+Serif+4:opsz,wght@8..60,500;8..60,600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js" defer></script>
+  <script src="data.js" defer></script>
+  <script src="app.js" defer></script>
+</head>
+<body>
+  <div class="noise" aria-hidden="true"></div>
+
+  <header class="top">
+    <div class="brand">LIRALab</div>
+    <nav class="nav">
+      <a href="#findings">Findings</a>
+      <a href="#accuracy">Accuracy</a>
+      <a href="#windows">Windows</a>
+      <a href="#table">Table</a>
+      <a href="#read">Reading</a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="hero">
+      <p class="eyebrow">Experiment 1 · Walker-walk · CARC</p>
+      <h1>PEBBLE causal results</h1>
+      <p class="lede">
+        When label noise collapses preference-based RL, is it reward-model
+        accuracy—or SAC overoptimizing a frozen, slightly wrong reward?
+      </p>
+      <div class="hero-cta">
+        <a class="btn" href="#findings">See the sweep</a>
+        <p class="meta">ε ∈ {0, 0.05, 0.1, 0.2} · 500k steps · 1 seed each</p>
+      </div>
+      <div class="hero-wash" aria-hidden="true"></div>
+    </section>
+
+    <section class="verdict" id="findings">
+      <h2>Verdict</h2>
+      <p class="verdict-text">
+        At <strong>ε=0.2</strong>, true return collapses (~44 vs ~880–950) and
+        <strong>held-out / fixed-ref accuracy stay far below Oracle</strong>,
+        while train-fit remains ~0.98. Frozen-window Goodhart signatures are rare.
+        This first sweep favors <em>reward-model quality under label noise</em>
+        over pure overoptimization on a still-accurate RM.
+      </p>
+      <div class="stat-row">
+        <div class="stat">
+          <div class="stat-k">ε=0 true</div>
+          <div class="stat-v ok">880</div>
+        </div>
+        <div class="stat">
+          <div class="stat-k">ε=0.05 true</div>
+          <div class="stat-v ok">953</div>
+        </div>
+        <div class="stat">
+          <div class="stat-k">ε=0.1 true</div>
+          <div class="stat-v mid">934</div>
+        </div>
+        <div class="stat">
+          <div class="stat-k">ε=0.2 true</div>
+          <div class="stat-v bad">44</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="panel" id="returns">
+      <div class="panel-head">
+        <h2>Performance over training</h2>
+        <p>Rolling-mean episode returns. Collapse at ε=0.2 after ~200k steps.</p>
+      </div>
+      <div class="chart-grid">
+        <figure class="chart-card">
+          <figcaption>True return (ground truth)</figcaption>
+          <canvas id="chart-true" height="220"></canvas>
+        </figure>
+        <figure class="chart-card">
+          <figcaption>Proxy return (r̂)</figcaption>
+          <canvas id="chart-proxy" height="220"></canvas>
+        </figure>
+      </div>
+    </section>
+
+    <section class="panel" id="accuracy">
+      <div class="panel-head">
+        <h2>Reward-model accuracy @ updates</h2>
+        <p>Logged at each discrete RM update (feedback budget ends ~190k).</p>
+      </div>
+      <div class="chart-grid three">
+        <figure class="chart-card">
+          <figcaption>Held-out</figcaption>
+          <canvas id="chart-heldout" height="200"></canvas>
+        </figure>
+        <figure class="chart-card">
+          <figcaption>Fixed reference</figcaption>
+          <canvas id="chart-fixed" height="200"></canvas>
+        </figure>
+        <figure class="chart-card">
+          <figcaption>On-policy</figcaption>
+          <canvas id="chart-onpolicy" height="200"></canvas>
+        </figure>
+      </div>
+      <figure class="chart-card wide">
+        <figcaption>Final accuracies by preference set</figcaption>
+        <canvas id="chart-final-bars" height="160"></canvas>
+      </figure>
+    </section>
+
+    <section class="panel" id="windows">
+      <div class="panel-head">
+        <h2>Within-window proxy vs true</h2>
+        <p>
+          Last frozen window after feedback budget exhausted (RM weights fixed).
+          X-axis = steps into the window (×1000).
+        </p>
+      </div>
+      <div class="chart-grid">
+        <figure class="chart-card">
+          <figcaption id="cap-within-0">ε=0 · last window</figcaption>
+          <canvas id="chart-within-0" height="220"></canvas>
+        </figure>
+        <figure class="chart-card">
+          <figcaption id="cap-within-2">ε=0.2 · last window</figcaption>
+          <canvas id="chart-within-2" height="220"></canvas>
+        </figure>
+      </div>
+      <figure class="chart-card wide">
+        <figcaption>Held-out accuracy vs true return @ RM updates</figcaption>
+        <canvas id="chart-scatter" height="200"></canvas>
+      </figure>
+    </section>
+
+    <section class="panel" id="table">
+      <div class="panel-head">
+        <h2>End-of-run numbers</h2>
+        <p>Accuracies from last RM update · returns = mean of last 20 train episodes.</p>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>ε</th>
+              <th>True</th>
+              <th>Proxy</th>
+              <th>Eval true</th>
+              <th>Train</th>
+              <th>Held-out</th>
+              <th>On-policy</th>
+              <th>Fixed-ref</th>
+              <th>Goodhart wins</th>
+            </tr>
+          </thead>
+          <tbody id="final-table"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="panel split" id="read">
+      <div>
+        <h2>Reading the research question</h2>
+        <article class="note">
+          <h3>RM accuracy / label noise</h3>
+          <p>
+            Primary story. At ε=0.2, held-out and fixed-ref never approach
+            Oracle levels while train accuracy stays ~0.98—the model fits noisy
+            labels. Collapse lines up with that generalization gap.
+          </p>
+        </article>
+        <article class="note">
+          <h3>Goodhart / overoptimization</h3>
+          <p>
+            Weak support here. Only 1/10 frozen windows at ε=0.2 look
+            Goodhart-like (proxy↑ true↓). The long post-feedback freeze looks
+            more stuck-bad than proxy racing away from true.
+          </p>
+        </article>
+      </div>
+      <aside class="caveats">
+        <h3>Caveats</h3>
+        <ul>
+          <li>Single seed per ε</li>
+          <li>Walker-walk only</li>
+          <li>On-policy accuracy is high-variance</li>
+          <li>Goodhart test = simple early/late window split</li>
+        </ul>
+        <p class="next">
+          Next: multi-seed at ε∈{0, 0.2} and a no-noise early-freeze control.
+        </p>
+      </aside>
+    </section>
+  </main>
+
+  <footer>
+    <div>
+      <strong>LIRALab Experiment 1</strong>
+      <span>B-Pref / PEBBLE · Mistake teacher sweep</span>
+    </div>
+    <div class="foot-links">
+      <a href="https://github.com/thatrandomasiandev/liralab-experiment-1">GitHub</a>
+      <a href="../POSTDOC_READOUT.md">Readout</a>
+    </div>
+  </footer>
+</body>
+</html>

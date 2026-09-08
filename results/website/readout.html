@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Postdoc readout · LIRALab PEBBLE</title>
+  <link rel="stylesheet" href="styles.css" />
+  <style>
+    .doc { max-width: 720px; margin: 2rem auto 4rem; padding: 0 1rem; }
+    .doc h1 { font-family: var(--display); font-size: 2rem; }
+    .doc h2 { font-family: var(--display); margin-top: 2rem; }
+    .doc p, .doc li { color: var(--muted); }
+    .doc strong { color: var(--ink); }
+    .doc table { width: 100%; border-collapse: collapse; margin: 1rem 0; font-size: 0.85rem; }
+    .doc th, .doc td { border: 1px solid var(--line); padding: 0.5rem 0.6rem; text-align: left; }
+    .doc pre { overflow: auto; padding: 1rem; background: var(--panel); border: 1px solid var(--line); font-family: var(--mono); font-size: 0.8rem; }
+    .back { display: inline-block; margin: 1.5rem 0 0; color: var(--accent); text-decoration: none; font-family: var(--mono); font-size: 0.8rem; }
+  </style>
+</head>
+<body>
+  <div class="noise" aria-hidden="true"></div>
+  <div class="doc">
+    <a class="back" href="/">← Results site</a>
+    <h1>Postdoc readout — PEBBLE causal instrumentation (Walker-walk)</h1>
+
+<p><strong>Date:</strong> 2026-09-07  </p>
+<p><strong>Env:</strong> Walker-walk · PEBBLE · Mistake teacher ε ∈ {0, 0.05, 0.1, 0.2}  </p>
+<p><strong>Horizon:</strong> 500k steps · <code>max_feedback=1000</code> · <code>num_interact=20000</code> · single seed per ε  </p>
+<p><strong>Compute:</strong> USC CARC (<code>biyik_1165</code>)</p>
+
+<h2>One-line takeaway</h2>
+
+<p>Under ε=0.2, <strong>true return collapses</strong> and <strong>held-out / fixed-ref reward accuracy are substantially worse</strong> than Oracle — so this first sweep looks more like <strong>reward-model quality failure under label noise</strong> than a clean Goodhart case where accuracy stays high while behavior diverges. Mid-training windows show only weak / occasional proxy↑ true↓ signatures.</p>
+
+<h2>What we measured</h2>
+
+<p>At every reward-model update:</p>
+
+<table>
+<tr><th>Preference set</th><th>Role</th></tr>
+<tr><td>Train</td><td>Fit to labels used for training</td></tr>
+<tr><td>Held-out (20% of each batch)</td><td>Generalization on the query distribution</td></tr>
+<tr><td>On-policy (clean oracle labels)</td><td>Accuracy on current-policy states</td></tr>
+<tr><td>Fixed reference (oracle, frozen once)</td><td>Corruption of an early region</td></tr>
+</table>
+
+<p>Within each frozen window (<code>window_id</code>): <strong>proxy return</strong> (<code>r_hat</code>) vs <strong>true return</strong> (GT).</p>
+
+<h2>Results snapshot (end of training)</h2>
+
+<p>Last ~20 train episodes · last RM update (~190k, when feedback budget hits 1000):</p>
+
+<table>
+<tr><th>ε</th><th>True return</th><th>Proxy return</th><th>Train acc</th><th>Held-out</th><th>On-policy</th><th>Fixed-ref</th></tr>
+<tr><td>0</td><td>~880</td><td>~615</td><td>0.98</td><td>**0.87**</td><td>0.77</td><td>**0.85**</td></tr>
+<tr><td>0.05</td><td>~953</td><td>~492</td><td>0.98</td><td>0.76</td><td>0.76</td><td>0.80</td></tr>
+<tr><td>0.10</td><td>~934</td><td>~474</td><td>0.98</td><td>0.74</td><td>0.88</td><td>0.72</td></tr>
+<tr><td>0.20</td><td>**~44**</td><td>~150</td><td>0.98</td><td>**0.60**</td><td>0.66</td><td>**0.64**</td></tr>
+</table>
+
+<p>Train-fit accuracy stays high even at ε=0.2 (model fits noisy labels). <strong>Held-out and fixed-ref do not</strong> — they sit ~15–25 points below Oracle throughout.</p>
+
+<h2>Accuracy trajectories (held-out @ RM updates)</h2>
+
+<li>**ε=0:** held-out stays ~0.82–0.90  </li>
+<li>**ε=0.05 / 0.1:** held-out ~0.74–0.82 (stable but lower)  </li>
+<li>**ε=0.2:** held-out starts ~0.63, dips to ~0.51 early, ends ~0.60 — never recovers  </li>
+
+<p>Fixed-ref at ε=0.2 slowly drifts down (0.73 → 0.64), consistent with later updates harming an early region under noisy supervision.</p>
+
+<h2>Within-window (frozen RM) proxy vs true</h2>
+
+<p>Heuristic “Goodhart-like” window: late-half proxy mean rises by &gt;5 while true mean falls by &gt;5.</p>
+
+<table>
+<tr><th>ε</th><th>Goodhart-like windows</th></tr>
+<tr><td>0 / 0.05 / 0.1</td><td>0 / 10</td></tr>
+<tr><td>0.2</td><td>1 / 10 (window 2 mild)</td></tr>
+</table>
+
+<p>After <code>max_feedback</code>, the RM is frozen for a <strong>long</strong> final window (~190k→500k). At ε=0.2 that window’s mean true return is ~76; proxy still edges up slightly while true is roughly flat/slightly down — not a dramatic Goodhart divergence, more “stuck bad.”</p>
+
+<p>At ε≤0.1, late windows usually show <strong>both</strong> proxy and true rising.</p>
+
+<h2>How to read this against the research question</h2>
+
+<table>
+<tr><th>Hypothesis</th><th>Supported here?</th></tr>
+<tr><td>Collapse from **RM accuracy decay / poor generalization under noise**</td><td>**Yes (primary):** held-out &amp; fixed-ref much worse at ε=0.2; train acc stays high (overfit to noisy labels)</td></tr>
+<tr><td>Collapse from **SAC overoptimization with roughly-constant RM error**</td><td>**Weak:** only rare within-window proxy↑/true↓; final freeze doesn’t show classic Goodhart separation</td></tr>
+</table>
+
+<p><strong>Caveats:</strong> one seed per ε; Walker only; on-policy acc is noisy (few pairs); “Goodhart” window test is a simple early/late split, not a formal test.</p>
+
+<h2>Artifacts</h2>
+
+<pre><code>
+results/figures/overview_sweep.png      # returns + held-out/on-policy over training
+results/figures/final_accuracies.png    # bar: four accuracy sets × ε
+results/figures/within_window_last.png  # last frozen window, ε=0 vs 0.2
+results/figures/heldout_vs_return.png   # held-out acc vs true return @ updates
+results/raw/...                         # full CSVs pulled from CARC
+</code></pre>
+
+<p>Repo: https://github.com/thatrandomasiandev/liralab-experiment-1</p>
+
+<h2>Suggested next steps</h2>
+
+<p>1. <strong>Multi-seed</strong> at ε∈{0, 0.2} (n≥3) to check stability of the collapse + accuracy gap  </p>
+<p>2. Plot <strong>on-policy accuracy with more pairs</strong> (reduce variance)  </p>
+<p>3. Optional control: freeze RM earlier under Oracle to stress-test Goodhart without label noise  </p>
+<p>4. Add a second domain (e.g. Cheetah / Quadruped) if Walker result holds</p>
+  </div>
+</body>
+</html>
