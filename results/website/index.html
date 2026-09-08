@@ -8,10 +8,10 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Outfit:wght@400;500;600;700&family=Source+Serif+4:opsz,wght@8..60,500;8..60,600&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="styles.css?v=3" />
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js" defer></script>
   <script src="data.js" defer></script>
-  <script src="app.js" defer></script>
+  <script src="app.js?v=3" defer></script>
 </head>
 <body>
   <div class="noise" aria-hidden="true"></div>
@@ -79,11 +79,15 @@
       <div class="chart-grid">
         <figure class="chart-card">
           <figcaption>True return (ground truth)</figcaption>
-          <canvas id="chart-true" height="220"></canvas>
+          <div class="chart-box">
+            <canvas id="chart-true"></canvas>
+          </div>
         </figure>
         <figure class="chart-card">
           <figcaption>Proxy return (r̂)</figcaption>
-          <canvas id="chart-proxy" height="220"></canvas>
+          <div class="chart-box">
+            <canvas id="chart-proxy"></canvas>
+          </div>
         </figure>
       </div>
     </section>
@@ -96,20 +100,28 @@
       <div class="chart-grid three">
         <figure class="chart-card">
           <figcaption>Held-out</figcaption>
-          <canvas id="chart-heldout" height="200"></canvas>
+          <div class="chart-box chart-box--sm">
+            <canvas id="chart-heldout"></canvas>
+          </div>
         </figure>
         <figure class="chart-card">
           <figcaption>Fixed reference</figcaption>
-          <canvas id="chart-fixed" height="200"></canvas>
+          <div class="chart-box chart-box--sm">
+            <canvas id="chart-fixed"></canvas>
+          </div>
         </figure>
         <figure class="chart-card">
           <figcaption>On-policy</figcaption>
-          <canvas id="chart-onpolicy" height="200"></canvas>
+          <div class="chart-box chart-box--sm">
+            <canvas id="chart-onpolicy"></canvas>
+          </div>
         </figure>
       </div>
       <figure class="chart-card wide">
         <figcaption>Final accuracies by preference set</figcaption>
-        <canvas id="chart-final-bars" height="160"></canvas>
+        <div class="chart-box chart-box--lg">
+          <canvas id="chart-final-bars"></canvas>
+        </div>
       </figure>
     </section>
 
@@ -124,16 +136,22 @@
       <div class="chart-grid">
         <figure class="chart-card">
           <figcaption id="cap-within-0">ε=0 · last window</figcaption>
-          <canvas id="chart-within-0" height="220"></canvas>
+          <div class="chart-box">
+            <canvas id="chart-within-0"></canvas>
+          </div>
         </figure>
         <figure class="chart-card">
           <figcaption id="cap-within-2">ε=0.2 · last window</figcaption>
-          <canvas id="chart-within-2" height="220"></canvas>
+          <div class="chart-box">
+            <canvas id="chart-within-2"></canvas>
+          </div>
         </figure>
       </div>
       <figure class="chart-card wide">
         <figcaption>Held-out accuracy vs true return @ RM updates</figcaption>
-        <canvas id="chart-scatter" height="200"></canvas>
+        <div class="chart-box chart-box--lg">
+          <canvas id="chart-scatter"></canvas>
+        </div>
       </figure>
     </section>
 

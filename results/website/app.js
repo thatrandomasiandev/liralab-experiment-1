@@ -224,15 +224,7 @@
     });
   }
 
-  function sizeCanvases() {
-    document.querySelectorAll(".chart-card canvas").forEach((c) => {
-      const tall = c.id === "chart-final-bars" || c.id === "chart-scatter" ? "260px" : "280px";
-      c.parentElement.style.height = tall;
-    });
-  }
-
   function boot() {
-    sizeCanvases();
     fillTable();
     makeLine("chart-true", D.returnCats, lineSeries(D.trueReturn), 0, 1000);
     makeLine("chart-proxy", D.returnCats, lineSeries(D.proxyReturn), 0, 700);
