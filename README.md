@@ -115,12 +115,15 @@ Apple Silicon was used only for early recon. Prefer CARC for real runs. Nontrivi
 
 ## Results website
 
+Live: **https://liralab-pebble-results.vercel.app**
+
+Local:
 ```bash
 cd results/website && python3 -m http.server 8766
 # open http://127.0.0.1:8766
 ```
 
-Interactive charts live in [`results/website/`](results/website/). Written readout: [`results/POSTDOC_READOUT.md`](results/POSTDOC_READOUT.md).
+Source: [`results/website/`](results/website/). Written readout: [`results/POSTDOC_READOUT.md`](results/POSTDOC_READOUT.md).
 
 
 ## Citation / upstream
