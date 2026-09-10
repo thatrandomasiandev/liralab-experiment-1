@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>LIRALab · Enter password</title>
+  <meta name="robots" content="noindex, nofollow" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Outfit:wght@400;500;600;700&family=Source+Serif+4:opsz,wght@8..60,500;8..60,600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css?v=8" />
+  <style>
+    .gate {
+      min-height: calc(100vh - 4rem);
+      display: grid;
+      place-items: center;
+      padding: 2rem 0 4rem;
+    }
+    .gate-card {
+      width: min(100%, 26rem);
+      padding: 2rem 1.75rem 1.75rem;
+      border: 1px solid var(--line);
+      background: color-mix(in oklch, var(--panel) 88%, transparent);
+      backdrop-filter: blur(8px);
+    }
+    .gate-card h1 {
+      margin: 0 0 0.5rem;
+      font-family: var(--display);
+      font-size: 1.85rem;
+      font-weight: 600;
+      letter-spacing: -0.02em;
+    }
+    .gate-card p {
+      margin: 0 0 1.4rem;
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+    .gate-card label {
+      display: block;
+      margin-bottom: 0.4rem;
+      font-family: var(--mono);
+      font-size: 0.72rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+    .gate-card input {
+      width: 100%;
+      margin-bottom: 1rem;
+      padding: 0.75rem 0.85rem;
+      border: 1px solid var(--line);
+      border-radius: 0;
+      background: oklch(0.2 0.02 240);
+      color: var(--ink);
+      font-family: var(--mono);
+      font-size: 0.95rem;
+    }
+    .gate-card input:focus {
+      outline: 2px solid color-mix(in oklch, var(--accent) 70%, transparent);
+      outline-offset: 1px;
+    }
+    .gate-card .btn {
+      width: 100%;
+      justify-content: center;
+      cursor: pointer;
+      border: 0;
+    }
+    .gate-error {
+      min-height: 1.25rem;
+      margin: 0 0 0.85rem;
+      color: var(--bad);
+      font-size: 0.85rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="noise" aria-hidden="true"></div>
+  <header class="top">
+    <div class="brand">LIRALab</div>
+  </header>
+  <main class="gate">
+    <form class="gate-card" id="gate-form" autocomplete="current-password">
+      <p class="eyebrow">Protected results</p>
+      <h1>Enter password</h1>
+      <p>This readout is private. Enter the shared password to continue.</p>
+      <label for="password">Password</label>
+      <input id="password" name="password" type="password" required autofocus />
+      <p class="gate-error" id="gate-error" role="alert" aria-live="polite"></p>
+      <button class="btn" type="submit" id="gate-submit">Unlock</button>
+    </form>
+  </main>
+  <script>
+    const form = document.getElementById("gate-form");
+    const errorEl = document.getElementById("gate-error");
+    const submit = document.getElementById("gate-submit");
+
+    form.addEventListener("submit", async (event) => {
+      event.preventDefault();
+      errorEl.textContent = "";
+      submit.disabled = true;
+      try {
+        const password = document.getElementById("password").value;
+        const res = await fetch("/api/login", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ password }),
+        });
+        if (!res.ok) {
+          errorEl.textContent = "Incorrect password.";
+          submit.disabled = false;
+          return;
+        }
+        window.location.href = "/";
+      } catch {
+        errorEl.textContent = "Could not reach the server. Try again.";
+        submit.disabled = false;
+      }
+    });
+  </script>
+</body>
+</html>

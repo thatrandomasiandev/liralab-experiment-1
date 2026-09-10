@@ -7,14 +7,14 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;650&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="/static/style.css" />
+  <link rel="stylesheet" href="/queue/style.css" />
 </head>
 <body>
   <div class="wrap">
     <header>
       <div>
         <h1>CARC GPU queue</h1>
-        <p class="sub">Stable view from Discovery — live queue + recent finished jobs (so nothing “vanishes”).</p>
+        <p class="sub">Synced from your Mac’s Discovery SSH session — live queue + recent finished jobs.</p>
       </div>
       <div class="controls">
         <span id="pill" class="status-pill">loading</span>
@@ -192,7 +192,7 @@
       $("pill").className = "status-pill";
       document.body.classList.add("is-updating");
       try {
-        const res = await fetch("/api/status" + (force ? "?force=1" : ""));
+        const res = await fetch("/api/queue/status" + (force ? "?force=1" : ""));
         const data = await res.json();
         const err = $("error");
 

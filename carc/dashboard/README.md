@@ -14,6 +14,10 @@ python3 carc/dashboard/server.py
 
 4. Open **http://127.0.0.1:8765**
 
+Optional remote mirror (password-protected): while this server is running it pushes snapshots to
+**https://liralab-pebble-results.vercel.app/queue** (site password required). Configure
+`carc/dashboard/.env` with `CARC_INGEST_SECRET` matching the Vercel `INGEST_SECRET`.
+
 Auto-refreshes every 30s. Click **Refresh** for a forced pull.
 
 ## What you’ll see

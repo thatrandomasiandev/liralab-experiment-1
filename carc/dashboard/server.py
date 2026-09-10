@@ -15,6 +15,8 @@ import re
 import subprocess
 import threading
 import time
+import urllib.error
+import urllib.request
 from datetime import datetime, timezone
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
@@ -23,16 +25,92 @@ from urllib.parse import urlparse
 
 ROOT = Path(__file__).resolve().parent
 STATIC = ROOT / "static"
+
+
+def _load_dotenv() -> None:
+    path = ROOT / ".env"
+    if not path.is_file():
+        return
+    for line in path.read_text().splitlines():
+        line = line.strip()
+        if not line or line.startswith("#") or "=" not in line:
+            continue
+        key, _, val = line.partition("=")
+        key = key.strip()
+        if key and key not in os.environ:
+            os.environ[key] = val.strip().strip('"').strip("'")
+
+
+_load_dotenv()
+
 HOST = os.environ.get("CARC_DASH_HOST", "127.0.0.1")
 PORT = int(os.environ.get("CARC_DASH_PORT", "8765"))
 SSH_HOST = os.environ.get("CARC_SSH_HOST", "discovery")
 SSH_USER = os.environ.get("CARC_NETID", "jjt_373")
 CACHE_TTL_SEC = float(os.environ.get("CARC_DASH_TTL", "25"))
 HISTORY_HOURS = int(os.environ.get("CARC_DASH_HISTORY_HOURS", "48"))
+INGEST_URL = os.environ.get(
+    "CARC_INGEST_URL",
+    "https://liralab-pebble-results.vercel.app/api/queue/ingest",
+)
+INGEST_SECRET = os.environ.get("CARC_INGEST_SECRET", "")
 
 _lock = threading.Lock()
 _collect_lock = threading.Lock()
 _cache: dict[str, Any] = {"ts": 0.0, "data": None, "error": None}
+
+
+def _push_remote(payload: dict[str, Any]) -> None:
+    """Best-effort mirror to the password-protected Vercel /queue page."""
+    if not INGEST_SECRET or not INGEST_URL:
+        return
+    try:
+        import ssl
+
+        body = json.dumps(payload).encode("utf-8")
+        req = urllib.request.Request(
+            INGEST_URL,
+            data=body,
+            method="POST",
+            headers={
+                "Content-Type": "application/json",
+                "Authorization": f"Bearer {INGEST_SECRET}",
+            },
+        )
+        context = None
+        try:
+            import certifi  # type: ignore
+
+            context = ssl.create_default_context(cafile=certifi.where())
+        except Exception:  # noqa: BLE001
+            context = ssl.create_default_context()
+        with urllib.request.urlopen(req, timeout=20, context=context) as resp:
+            resp.read()
+    except (urllib.error.URLError, urllib.error.HTTPError, TimeoutError, OSError) as exc:
+        # macOS Python builds often lack CA certs; fall back to curl.
+        try:
+            subprocess.run(
+                [
+                    "curl",
+                    "-sS",
+                    "-m",
+                    "20",
+                    "-X",
+                    "POST",
+                    INGEST_URL,
+                    "-H",
+                    "Content-Type: application/json",
+                    "-H",
+                    f"Authorization: Bearer {INGEST_SECRET}",
+                    "--data-binary",
+                    "@-",
+                ],
+                input=json.dumps(payload).encode("utf-8"),
+                check=True,
+                capture_output=True,
+            )
+        except Exception as curl_exc:  # noqa: BLE001
+            print(f"[dash] remote ingest skipped: {exc} / curl: {curl_exc}")
 
 
 def _ssh(remote_cmd: str, timeout: int = 60) -> str:
@@ -297,7 +375,9 @@ def get_status(force: bool = False) -> dict[str, Any]:
                 _cache["ts"] = time.time()
                 _cache["data"] = data
                 _cache["error"] = None
-            return {"ok": True, "cached": False, "cache_age_sec": 0, **data}
+            payload = {"ok": True, "cached": False, "cache_age_sec": 0, **data}
+            _push_remote(payload)
+            return payload
         except Exception as exc:  # noqa: BLE001
             with _lock:
                 _cache["error"] = str(exc)

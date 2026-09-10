@@ -82,6 +82,93 @@
     }).join("");
   }
 
+  let activeRawEps = "0.0";
+
+  function fillRawTable(epsKey) {
+    activeRawEps = epsKey;
+    const block = D.rawUpdates && D.rawUpdates[epsKey];
+    const tb = document.getElementById("raw-table");
+    const meta = document.getElementById("raw-meta");
+    if (!tb || !block) return;
+    tb.innerHTML = block.rows
+      .map((r) => {
+        const bad = epsKey === "0.2" ? ' class="row-bad"' : "";
+        return `<tr${bad}>
+          <td>${r.step.toLocaleString()}</td>
+          <td>${r.window_id}</td>
+          <td>${r.total_feedback}</td>
+          <td>${r.train.toFixed(4)}</td>
+          <td>${r.heldout.toFixed(4)}</td>
+          <td>${r.onpolicy.toFixed(4)}</td>
+          <td>${r.fixed.toFixed(4)}</td>
+        </tr>`;
+      })
+      .join("");
+    if (meta) {
+      meta.textContent = `${D.labels[epsKey]} · ${block.rows.length} RM updates · source ${block.path}`;
+    }
+    document.querySelectorAll(".raw-tab").forEach((btn) => {
+      const on = btn.dataset.eps === epsKey;
+      btn.classList.toggle("is-active", on);
+      btn.setAttribute("aria-selected", on ? "true" : "false");
+    });
+  }
+
+  function fillReturnsRaw() {
+    const tb = document.getElementById("returns-raw-table");
+    if (!tb || !D.trueReturn) return;
+    tb.innerHTML = D.returnCats
+      .map((bin, i) => {
+        const cells = EPS.map((e) => {
+          const v = D.trueReturn[e][i];
+          const cls = e === "0.2" && v < 100 ? ' class="row-bad"' : "";
+          return `<td${cls}>${v.toFixed(1)}</td>`;
+        }).join("");
+        return `<tr><td>${bin}</td>${cells}</tr>`;
+      })
+      .join("");
+  }
+
+  function downloadText(filename, text) {
+    const blob = new Blob([text], { type: "text/csv;charset=utf-8" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = filename;
+    a.click();
+    URL.revokeObjectURL(url);
+  }
+
+  function downloadRawCsv() {
+    const block = D.rawUpdates && D.rawUpdates[activeRawEps];
+    if (!block) return;
+    const header = "step,window_id,total_feedback,acc_train,acc_heldout,acc_onpolicy,acc_fixed_ref";
+    const lines = block.rows.map(
+      (r) =>
+        `${r.step},${r.window_id},${r.total_feedback},${r.train},${r.heldout},${r.onpolicy},${r.fixed}`
+    );
+    downloadText(`pebble_reward_update_metrics_eps${activeRawEps}.csv`, [header, ...lines].join("\n"));
+  }
+
+  function downloadReturnsCsv() {
+    const header = "bin_k_steps,eps_0,eps_0.05,eps_0.1,eps_0.2";
+    const lines = D.returnCats.map((bin, i) => {
+      const vals = EPS.map((e) => D.trueReturn[e][i]).join(",");
+      return `${bin},${vals}`;
+    });
+    downloadText("pebble_true_return_bins.csv", [header, ...lines].join("\n"));
+  }
+
+  function wireRawControls() {
+    document.querySelectorAll(".raw-tab").forEach((btn) => {
+      btn.addEventListener("click", () => fillRawTable(btn.dataset.eps));
+    });
+    const dl = document.getElementById("btn-download-csv");
+    if (dl) dl.addEventListener("click", downloadRawCsv);
+    const dlR = document.getElementById("btn-download-returns");
+    if (dlR) dlR.addEventListener("click", downloadReturnsCsv);
+  }
+
   function makeBars() {
     const el = document.getElementById("chart-final-bars");
     if (!el || typeof Chart === "undefined") return;
@@ -226,6 +313,9 @@
 
   function boot() {
     fillTable();
+    fillRawTable("0.0");
+    fillReturnsRaw();
+    wireRawControls();
     makeLine("chart-true", D.returnCats, lineSeries(D.trueReturn), 0, 1000);
     makeLine("chart-proxy", D.returnCats, lineSeries(D.proxyReturn), 0, 700);
     makeLine("chart-heldout", D.rmSteps, lineSeries(D.heldout, 3), 0.45, 1);

@@ -1,0 +1,72 @@
+{
+  "all_checkpoints": {
+    "heldout": {
+      "pearson": 0.286,
+      "spearman": 0.244
+    },
+    "fixed": {
+      "pearson": 0.463,
+      "spearman": 0.522
+    },
+    "onpol": {
+      "pearson": 0.606,
+      "spearman": 0.635
+    },
+    "train": {
+      "pearson": 0.047,
+      "spearman": 0.015
+    },
+    "gap": {
+      "pearson": -0.284,
+      "spearman": -0.224
+    }
+  },
+  "late_checkpoints": {
+    "heldout": {
+      "pearson": 0.564,
+      "spearman": 0.626
+    },
+    "fixed": {
+      "pearson": 0.6,
+      "spearman": 0.726
+    },
+    "onpol": {
+      "pearson": 0.62,
+      "spearman": 0.62
+    },
+    "train": {
+      "pearson": 0.421,
+      "spearman": 0.462
+    },
+    "gap": {
+      "pearson": -0.551,
+      "spearman": -0.544
+    }
+  },
+  "final": {
+    "heldout": {
+      "pearson": 0.827,
+      "spearman": 0.4
+    },
+    "fixed": {
+      "pearson": 0.796,
+      "spearman": 0.4
+    },
+    "onpol": {
+      "pearson": 0.8,
+      "spearman": 0.4
+    },
+    "train": {
+      "pearson": 0.699,
+      "spearman": 0.4
+    },
+    "gap": {
+      "pearson": -0.83,
+      "spearman": -0.4
+    }
+  },
+  "n_points": 40,
+  "n_late": 20,
+  "n_runs": 4,
+  "counterexamples_high_acc_low_return_late": []
+}

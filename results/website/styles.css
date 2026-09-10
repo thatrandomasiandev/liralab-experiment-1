@@ -138,12 +138,26 @@ body {
   text-decoration: none;
   font-size: 0.92rem;
   font-weight: 500;
+  cursor: pointer;
+  font-family: var(--sans);
   transition: background 0.2s ease, transform 0.2s ease;
 }
 
 .btn:hover {
   background: oklch(0.72 0.12 175 / 0.22);
   transform: translateY(-1px);
+}
+
+.btn-ghost {
+  border-color: var(--line);
+  background: transparent;
+  color: var(--muted);
+}
+
+.btn-ghost:hover {
+  color: var(--ink);
+  border-color: var(--muted);
+  background: oklch(0.34 0.03 235 / 0.4);
 }
 
 .meta {
@@ -174,11 +188,79 @@ body {
 
 .verdict h2,
 .panel-head h2,
-.split h2 {
+.split h2,
+.abstract h2,
+.insights h2 {
   margin: 0 0 0.75rem;
   font-family: var(--display);
   font-size: 1.55rem;
   font-weight: 600;
+}
+
+.insights .panel-head p {
+  margin: 0;
+  max-width: 40rem;
+  color: var(--muted);
+}
+
+.insights-body {
+  margin-top: 1.5rem;
+  display: grid;
+  gap: 1.15rem;
+  max-width: 46rem;
+}
+
+.insight {
+  padding: 1.1rem 0 0;
+  border-top: 1px solid var(--line);
+}
+
+.insight h3 {
+  margin: 0 0 0.45rem;
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+.insight p {
+  margin: 0;
+  font-size: 1.02rem;
+  line-height: 1.6;
+  color: oklch(0.86 0.015 90);
+}
+
+.insight strong {
+  color: var(--ink);
+  font-weight: 600;
+}
+
+.abstract .panel-head h2 {
+  max-width: 28ch;
+  font-size: clamp(1.45rem, 3.2vw, 1.85rem);
+  line-height: 1.2;
+  letter-spacing: -0.015em;
+}
+
+.abstract-body {
+  margin-top: 1.35rem;
+  max-width: 42rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid var(--line);
+}
+
+.abstract-body p {
+  margin: 0 0 1rem;
+  font-family: var(--display);
+  font-size: 1.08rem;
+  line-height: 1.65;
+  color: oklch(0.86 0.015 90);
+}
+
+.abstract-body p:last-child {
+  margin-bottom: 0;
 }
 
 .verdict-text {
@@ -188,8 +270,84 @@ body {
   color: var(--muted);
 }
 
+.verdict-text a {
+  color: var(--accent);
+  text-decoration: none;
+}
+
+.verdict-text a:hover { text-decoration: underline; }
+
 .verdict-text strong { color: var(--ink); font-weight: 600; }
 .verdict-text em { color: var(--accent); font-style: normal; font-weight: 500; }
+
+.raw-controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-top: 1.25rem;
+}
+
+.raw-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+.raw-tab {
+  font-family: var(--mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.04em;
+  padding: 0.45rem 0.75rem;
+  border: 1px solid var(--line);
+  background: transparent;
+  color: var(--muted);
+  cursor: pointer;
+}
+
+.raw-tab:hover { color: var(--ink); }
+
+.raw-tab.is-active {
+  color: var(--ink);
+  border-color: var(--accent);
+  background: oklch(0.72 0.12 175 / 0.12);
+}
+
+.raw-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+}
+
+.raw-meta {
+  margin: 0.85rem 0 0;
+  font-family: var(--mono);
+  font-size: 0.7rem;
+  color: var(--muted);
+}
+
+.raw-secondary {
+  margin-top: 2rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--line);
+}
+
+.raw-secondary h3 {
+  margin: 0 0 0.35rem;
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+
+.panel-head-note {
+  margin: 0 0 1rem;
+  color: var(--muted);
+  font-size: 0.92rem;
+}
+
+.raw-secondary .btn {
+  margin-top: 0.85rem;
+}
 
 .stat-row {
   display: grid;

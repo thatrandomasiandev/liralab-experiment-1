@@ -52,4 +52,386 @@ window.PEBBLE_DATA = {
   },
   within: {"0.0": {"window_id": 9, "siw": [1.0, 8.0, 16.0, 24.0, 32.0, 40.0, 48.0, 56.0, 64.0, 72.0, 79.0, 87.0, 95.0, 103.0, 111.0, 119.0, 127.0, 135.0, 143.0, 151.0, 158.0, 166.0, 174.0, 182.0, 190.0, 198.0, 206.0, 214.0, 222.0, 230.0, 237.0, 245.0, 253.0, 261.0, 269.0, 277.0, 285.0, 293.0, 301.0, 309.0], "true": [628.5, 670.1, 740.1, 738.9, 657.7, 724.9, 683.2, 775.5, 776.3, 779.7, 716.5, 769.6, 789.5, 795.2, 827.8, 820.1, 874.5, 850.1, 830.1, 829.3, 890.0, 870.0, 836.4, 875.1, 887.8, 889.1, 838.9, 910.5, 906.4, 888.3, 866.9, 848.6, 907.8, 868.3, 874.4, 895.6, 875.5, 901.6, 891.3, 871.0], "proxy": [441.4, 475.8, 480.6, 500.6, 487.3, 502.2, 488.6, 548.7, 546.2, 543.2, 518.1, 541.2, 549.6, 568.7, 565.7, 565.9, 599.2, 590.8, 588.5, 588.6, 607.0, 593.1, 579.4, 602.3, 611.4, 621.5, 581.1, 627.9, 624.1, 612.2, 610.6, 595.4, 626.1, 608.9, 609.7, 617.7, 614.0, 625.1, 619.8, 613.7], "n": 309}, "0.2": {"window_id": 9, "siw": [1.0, 8.0, 16.0, 24.0, 32.0, 40.0, 48.0, 56.0, 64.0, 72.0, 79.0, 87.0, 95.0, 103.0, 111.0, 119.0, 127.0, 135.0, 143.0, 151.0, 158.0, 166.0, 174.0, 182.0, 190.0, 198.0, 206.0, 214.0, 222.0, 230.0, 237.0, 245.0, 253.0, 261.0, 269.0, 277.0, 285.0, 293.0, 301.0, 309.0], "true": [422.1, 33.7, 37.8, 343.0, 34.2, 73.6, 56.9, 39.9, 57.7, 67.7, 21.5, 45.5, 33.3, 33.4, 70.7, 32.5, 33.3, 34.7, 33.1, 111.2, 114.3, 241.5, 72.7, 36.4, 518.6, 84.5, 33.7, 42.9, 34.2, 33.8, 50.6, 32.8, 39.7, 32.6, 33.0, 32.6, 60.4, 64.8, 38.6, 34.2], "proxy": [131.6, 220.0, 287.8, 158.7, 288.8, 281.4, 274.5, 275.5, 32.2, 163.5, 214.8, 92.5, 298.6, 301.9, 281.0, 287.4, 301.9, 291.3, 295.8, 86.7, 97.0, 117.2, 107.0, 298.0, 179.0, 286.2, 293.6, 281.8, 279.4, 299.3, 286.6, 304.4, 279.2, 303.9, 305.5, 306.4, 299.3, 296.4, 294.2, 291.0], "n": 309}},
   scatter: {"0.0": {"heldout": [0.8833, 0.875, 0.9, 0.8167, 0.85, 0.8583, 0.8595, 0.8687, 0.8519, 0.865], "true": [101.1, 134.8, 227.1, 280.7, 312.2, 334.3, 446.4, 490.9, 564.4, 642.8], "step": [10000, 30000, 50000, 70000, 90000, 110000, 130000, 150000, 170000, 190000]}, "0.05": {"heldout": [0.75, 0.7917, 0.7944, 0.7542, 0.7733, 0.8167, 0.781, 0.7604, 0.7444, 0.755], "true": [109.2, 96.2, 170.0, 291.8, 322.5, 385.4, 422.5, 499.5, 504.1, 610.4], "step": [10000, 30000, 50000, 70000, 90000, 110000, 130000, 150000, 170000, 190000]}, "0.1": {"heldout": [0.7167, 0.7667, 0.8222, 0.7542, 0.7433, 0.7389, 0.7548, 0.7854, 0.7407, 0.74], "true": [108.2, 114.9, 155.0, 245.4, 305.7, 349.6, 391.9, 437.8, 412.0, 523.4], "step": [10000, 30000, 50000, 70000, 90000, 110000, 130000, 150000, 170000, 190000]}, "0.2": {"heldout": [0.6333, 0.5083, 0.5111, 0.5625, 0.56, 0.5917, 0.6167, 0.6187, 0.6204, 0.5967], "true": [109.3, 144.5, 229.3, 216.4, 221.0, 249.8, 332.5, 252.2, 333.0, 429.8], "step": [10000, 30000, 50000, 70000, 90000, 110000, 130000, 150000, 170000, 190000]}},
+  rawUpdates: {
+    "0.0": {
+      "path": "raw/H1024_L2_lr0.0005/teacher_b-1_g1_m0_s0_e0/label_smooth_0.0/schedule_0/PEBBLE_causal_mistake0_init1000_unsup9000_inter20000_maxfeed1000_seg50_acttanh_Rlr0.0003_Rbatch100_Rupdate50_en3_sample0_large_batch10_seed12345/reward_update_metrics.csv",
+      "rows": [
+        {
+          "step": 10000,
+          "window_id": 0,
+          "total_feedback": 100,
+          "train": 0.9792,
+          "heldout": 0.8833,
+          "onpolicy": 0.6458,
+          "fixed": 0.7917
+        },
+        {
+          "step": 30000,
+          "window_id": 1,
+          "total_feedback": 200,
+          "train": 0.9896,
+          "heldout": 0.875,
+          "onpolicy": 0.7396,
+          "fixed": 0.8281
+        },
+        {
+          "step": 50000,
+          "window_id": 2,
+          "total_feedback": 300,
+          "train": 0.9778,
+          "heldout": 0.9,
+          "onpolicy": 0.75,
+          "fixed": 0.8372
+        },
+        {
+          "step": 70000,
+          "window_id": 3,
+          "total_feedback": 400,
+          "train": 0.976,
+          "heldout": 0.8167,
+          "onpolicy": 0.7188,
+          "fixed": 0.8516
+        },
+        {
+          "step": 90000,
+          "window_id": 4,
+          "total_feedback": 500,
+          "train": 0.9683,
+          "heldout": 0.85,
+          "onpolicy": 0.8333,
+          "fixed": 0.8516
+        },
+        {
+          "step": 110000,
+          "window_id": 5,
+          "total_feedback": 600,
+          "train": 0.9764,
+          "heldout": 0.8583,
+          "onpolicy": 0.8125,
+          "fixed": 0.8411
+        },
+        {
+          "step": 130000,
+          "window_id": 6,
+          "total_feedback": 700,
+          "train": 0.9851,
+          "heldout": 0.8595,
+          "onpolicy": 0.8385,
+          "fixed": 0.8607
+        },
+        {
+          "step": 150000,
+          "window_id": 7,
+          "total_feedback": 800,
+          "train": 0.9807,
+          "heldout": 0.8687,
+          "onpolicy": 0.7604,
+          "fixed": 0.8477
+        },
+        {
+          "step": 170000,
+          "window_id": 8,
+          "total_feedback": 900,
+          "train": 0.9773,
+          "heldout": 0.8519,
+          "onpolicy": 0.8542,
+          "fixed": 0.8438
+        },
+        {
+          "step": 190000,
+          "window_id": 9,
+          "total_feedback": 1000,
+          "train": 0.9846,
+          "heldout": 0.865,
+          "onpolicy": 0.7708,
+          "fixed": 0.8529
+        }
+      ]
+    },
+    "0.05": {
+      "path": "raw/H1024_L2_lr0.0005/teacher_b-1_g1_m0.05_s0_e0/label_smooth_0.0/schedule_0/PEBBLE_causal_mistake0.05_init1000_unsup9000_inter20000_maxfeed1000_seg50_acttanh_Rlr0.0003_Rbatch100_Rupdate50_en3_sample0_large_batch10_seed12346/reward_update_metrics.csv",
+      "rows": [
+        {
+          "step": 10000,
+          "window_id": 0,
+          "total_feedback": 100,
+          "train": 0.9833,
+          "heldout": 0.75,
+          "onpolicy": 0.6354,
+          "fixed": 0.7148
+        },
+        {
+          "step": 30000,
+          "window_id": 1,
+          "total_feedback": 200,
+          "train": 0.9688,
+          "heldout": 0.7917,
+          "onpolicy": 0.6302,
+          "fixed": 0.7109
+        },
+        {
+          "step": 50000,
+          "window_id": 2,
+          "total_feedback": 300,
+          "train": 0.975,
+          "heldout": 0.7944,
+          "onpolicy": 0.75,
+          "fixed": 0.7891
+        },
+        {
+          "step": 70000,
+          "window_id": 3,
+          "total_feedback": 400,
+          "train": 0.9625,
+          "heldout": 0.7542,
+          "onpolicy": 0.7552,
+          "fixed": 0.7747
+        },
+        {
+          "step": 90000,
+          "window_id": 4,
+          "total_feedback": 500,
+          "train": 0.975,
+          "heldout": 0.7733,
+          "onpolicy": 0.7135,
+          "fixed": 0.7812
+        },
+        {
+          "step": 110000,
+          "window_id": 5,
+          "total_feedback": 600,
+          "train": 0.9743,
+          "heldout": 0.8167,
+          "onpolicy": 0.7708,
+          "fixed": 0.7995
+        },
+        {
+          "step": 130000,
+          "window_id": 6,
+          "total_feedback": 700,
+          "train": 0.9798,
+          "heldout": 0.781,
+          "onpolicy": 0.7969,
+          "fixed": 0.8008
+        },
+        {
+          "step": 150000,
+          "window_id": 7,
+          "total_feedback": 800,
+          "train": 0.9781,
+          "heldout": 0.7604,
+          "onpolicy": 0.75,
+          "fixed": 0.8047
+        },
+        {
+          "step": 170000,
+          "window_id": 8,
+          "total_feedback": 900,
+          "train": 0.9806,
+          "heldout": 0.7444,
+          "onpolicy": 0.875,
+          "fixed": 0.8177
+        },
+        {
+          "step": 190000,
+          "window_id": 9,
+          "total_feedback": 1000,
+          "train": 0.9812,
+          "heldout": 0.755,
+          "onpolicy": 0.7552,
+          "fixed": 0.8008
+        }
+      ]
+    },
+    "0.1": {
+      "path": "raw/H1024_L2_lr0.0005/teacher_b-1_g1_m0.1_s0_e0/label_smooth_0.0/schedule_0/PEBBLE_causal_mistake0.1_init1000_unsup9000_inter20000_maxfeed1000_seg50_acttanh_Rlr0.0003_Rbatch100_Rupdate50_en3_sample0_large_batch10_seed12347/reward_update_metrics.csv",
+      "rows": [
+        {
+          "step": 10000,
+          "window_id": 0,
+          "total_feedback": 100,
+          "train": 0.9917,
+          "heldout": 0.7167,
+          "onpolicy": 0.7656,
+          "fixed": 0.6523
+        },
+        {
+          "step": 30000,
+          "window_id": 1,
+          "total_feedback": 200,
+          "train": 0.9854,
+          "heldout": 0.7667,
+          "onpolicy": 0.6042,
+          "fixed": 0.6693
+        },
+        {
+          "step": 50000,
+          "window_id": 2,
+          "total_feedback": 300,
+          "train": 0.9778,
+          "heldout": 0.8222,
+          "onpolicy": 0.8281,
+          "fixed": 0.7135
+        },
+        {
+          "step": 70000,
+          "window_id": 3,
+          "total_feedback": 400,
+          "train": 0.9688,
+          "heldout": 0.7542,
+          "onpolicy": 0.7083,
+          "fixed": 0.7161
+        },
+        {
+          "step": 90000,
+          "window_id": 4,
+          "total_feedback": 500,
+          "train": 0.9825,
+          "heldout": 0.7433,
+          "onpolicy": 0.6562,
+          "fixed": 0.7279
+        },
+        {
+          "step": 110000,
+          "window_id": 5,
+          "total_feedback": 600,
+          "train": 0.9736,
+          "heldout": 0.7389,
+          "onpolicy": 0.7604,
+          "fixed": 0.7318
+        },
+        {
+          "step": 130000,
+          "window_id": 6,
+          "total_feedback": 700,
+          "train": 0.9738,
+          "heldout": 0.7548,
+          "onpolicy": 0.7604,
+          "fixed": 0.7083
+        },
+        {
+          "step": 150000,
+          "window_id": 7,
+          "total_feedback": 800,
+          "train": 0.9781,
+          "heldout": 0.7854,
+          "onpolicy": 0.8125,
+          "fixed": 0.7448
+        },
+        {
+          "step": 170000,
+          "window_id": 8,
+          "total_feedback": 900,
+          "train": 0.9824,
+          "heldout": 0.7407,
+          "onpolicy": 0.7396,
+          "fixed": 0.7201
+        },
+        {
+          "step": 190000,
+          "window_id": 9,
+          "total_feedback": 1000,
+          "train": 0.9783,
+          "heldout": 0.74,
+          "onpolicy": 0.8802,
+          "fixed": 0.7227
+        }
+      ]
+    },
+    "0.2": {
+      "path": "raw/H1024_L2_lr0.0005/teacher_b-1_g1_m0.2_s0_e0/label_smooth_0.0/schedule_0/PEBBLE_causal_mistake0.2_init1000_unsup9000_inter20000_maxfeed1000_seg50_acttanh_Rlr0.0003_Rbatch100_Rupdate50_en3_sample0_large_batch10_seed12348/reward_update_metrics.csv",
+      "rows": [
+        {
+          "step": 10000,
+          "window_id": 0,
+          "total_feedback": 100,
+          "train": 0.9833,
+          "heldout": 0.6333,
+          "onpolicy": 0.6302,
+          "fixed": 0.7279
+        },
+        {
+          "step": 30000,
+          "window_id": 1,
+          "total_feedback": 200,
+          "train": 0.9792,
+          "heldout": 0.5083,
+          "onpolicy": 0.7292,
+          "fixed": 0.6979
+        },
+        {
+          "step": 50000,
+          "window_id": 2,
+          "total_feedback": 300,
+          "train": 0.9694,
+          "heldout": 0.5111,
+          "onpolicy": 0.6094,
+          "fixed": 0.6914
+        },
+        {
+          "step": 70000,
+          "window_id": 3,
+          "total_feedback": 400,
+          "train": 0.9729,
+          "heldout": 0.5625,
+          "onpolicy": 0.5833,
+          "fixed": 0.6966
+        },
+        {
+          "step": 90000,
+          "window_id": 4,
+          "total_feedback": 500,
+          "train": 0.9892,
+          "heldout": 0.56,
+          "onpolicy": 0.6667,
+          "fixed": 0.6979
+        },
+        {
+          "step": 110000,
+          "window_id": 5,
+          "total_feedback": 600,
+          "train": 0.9681,
+          "heldout": 0.5917,
+          "onpolicy": 0.6406,
+          "fixed": 0.6654
+        },
+        {
+          "step": 130000,
+          "window_id": 6,
+          "total_feedback": 700,
+          "train": 0.9744,
+          "heldout": 0.6167,
+          "onpolicy": 0.6042,
+          "fixed": 0.6497
+        },
+        {
+          "step": 150000,
+          "window_id": 7,
+          "total_feedback": 800,
+          "train": 0.9813,
+          "heldout": 0.6187,
+          "onpolicy": 0.625,
+          "fixed": 0.6562
+        },
+        {
+          "step": 170000,
+          "window_id": 8,
+          "total_feedback": 900,
+          "train": 0.9861,
+          "heldout": 0.6204,
+          "onpolicy": 0.7552,
+          "fixed": 0.6536
+        },
+        {
+          "step": 190000,
+          "window_id": 9,
+          "total_feedback": 1000,
+          "train": 0.9758,
+          "heldout": 0.5967,
+          "onpolicy": 0.6562,
+          "fixed": 0.6367
+        }
+      ]
+    }
+  },
 };
